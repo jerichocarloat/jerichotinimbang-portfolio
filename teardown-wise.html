@@ -30,8 +30,8 @@
   --f-disp:InterDisplay,InterVariable,Inter,system-ui,sans-serif;
   --ink:#0f172a; --ink-soft:#1e293b; --txt:#475569; --mute:#64748b; --faint:#94a3b8;
   --line:#e2e8f0; --line-2:#eef2f7; --bg:#fff; --bg-2:#f8fafc; --bg-3:#f1f5f9;
-  --blue:#1d4ed8; --blue-2:var(--blue-2); --blue-soft:#eff4ff; --blue-line:#dbe6fe;
-  --ok:var(--ok); --warn:#b45309; --warn-soft:#fffbeb; --warn-line:#fde68a;
+  --blue:#1d4ed8; --blue-2:#2563eb; --blue-soft:#eff4ff; --blue-line:#dbe6fe;
+  --ok:#16a34a; --warn:#b45309; --warn-soft:#fffbeb; --warn-line:#fde68a;
   --r:12px; --r-lg:16px; --r-sm:8px; --maxw:880px; --gut:clamp(20px,5vw,40px);
   --e:cubic-bezier(.22,1,.36,1);
   --sh-1:0 1px 2px rgb(16 24 40/.05);
@@ -272,12 +272,27 @@ footer>div{display:flex;align-items:center;justify-content:space-between;gap:14p
 .par>div{transition:background .3s var(--e)}
 .par>div:hover{background:var(--bg-2)}
 @media (prefers-reduced-motion:reduce){
+  /* Reduced motion means less vestibular motion, not a dead page.
+     Opacity, colour and line-drawing stay on. */
   html,body{scroll-behavior:auto!important}
-  *{animation-duration:.01ms!important;animation-iteration-count:1!important;
-    transition-duration:.01ms!important;scroll-behavior:auto!important}
-  .btn,.card,a{transition-duration:.16s!important}
-  .js [data-r],.js [data-s]>*,.js [data-scale]{opacity:1!important;transform:none!important}
-  .js .clipr{clip-path:none}#pb{display:none}}
+  *{scroll-behavior:auto!important}
+
+  [data-scale]{transform:none!important}
+  .js [data-r],.js [data-s]>*{transform:none!important}
+
+  .js [data-r]{transition:opacity .55s ease!important;opacity:1!important}
+  .js [data-s]>*{transition:opacity .5s ease!important;opacity:1!important}
+  .js [data-scale]{opacity:1!important}
+  .js .clipr{clip-path:none}
+
+  .dash .ln{transition:stroke-dashoffset 1.3s ease!important}
+  .dash .ln2,.dash .gl,.dash .area,.dash .kpi,.dash .pt{
+    transition:opacity .6s ease!important}
+  .dash .bar .fg{transition:transform 1s ease!important}
+
+  .btn,.card,a,.hyp,.par>div{transition-duration:.2s!important}
+  #pb{display:none}
+}
 
 /* ══ FINAL MOTION PASS (all behind text, contrast-safe) ══ */
 /* section headers get a quiet rising kicker */
