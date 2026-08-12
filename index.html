@@ -46,8 +46,8 @@
   --txt:#475569; --mute:#64748b; --faint:#94a3b8;
   --line:#e2e8f0; --line-2:#eef2f7;
   --bg:#fff; --bg-2:#f8fafc; --bg-3:#f1f5f9;
-  --blue:#1d4ed8; --blue-2:var(--blue-2); --blue-soft:#eff4ff; --blue-line:#dbe6fe;
-  --ok:var(--ok);
+  --blue:#1d4ed8; --blue-2:#2563eb; --blue-soft:#eff4ff; --blue-line:#dbe6fe;
+  --ok:#16a34a;
   --r:12px; --r-lg:16px; --r-sm:8px;
   --maxw:1160px; --gut:clamp(20px,5vw,40px);
   --e:cubic-bezier(.22,1,.36,1);
@@ -665,13 +665,41 @@ footer nav a:hover{color:#fff}
 .js [data-s].on>*:nth-child(5){transition-delay:.23s}.js [data-s].on>*:nth-child(6){transition-delay:.28s}
 .js [data-s].on>*:nth-child(n+7){transition-delay:.33s}
 @media (prefers-reduced-motion:reduce){
-  /* instant anchor jumps: never drift slowly past other sections */
+  /* Reduced motion means less VESTIBULAR motion: movement, scaling, parallax.
+     It does not mean a dead page. Opacity, colour and line-drawing are not
+     vestibular triggers, so they stay on and the page still communicates state. */
+
+  /* 1. anchor jumps land instantly instead of drifting past other sections */
   html,body{scroll-behavior:auto!important}
-  *{animation-duration:.01ms!important;animation-iteration-count:1!important;
-    transition-duration:.01ms!important;scroll-behavior:auto!important}
-  /* keep small, non-vestibular UI feedback so the nav still feels alive */
-  .nl a,#ind,.btn,.card,header>nav,a{transition-duration:.16s!important}
-  [data-r],[data-s]>*,.rl>span,[data-scale],[data-par]{opacity:1!important;transform:none!important}}
+  *{scroll-behavior:auto!important}
+
+  /* 2. stop the motion that actually causes discomfort */
+  .rail>ul{animation:none!important}                    /* logo marquee */
+  [data-scale],[data-par]{transform:none!important}      /* parallax + scale */
+  [data-r],[data-s]>*,.rl>span{transform:none!important} /* slide-in offsets */
+  .card:hover,.cs:hover,.tile:hover,.lc>div:hover{transform:none!important}
+
+  /* 3. keep everything that is not vestibular */
+  [data-r]{transition:opacity .55s ease!important;opacity:1!important}
+  [data-s]>*{transition:opacity .5s ease!important;opacity:1!important}
+  .rl>span{opacity:1!important}
+  [data-scale],[data-par]{opacity:1!important}
+
+  /* charts still draw, count and fade */
+  .dash .ln{transition:stroke-dashoffset 1.3s ease!important}
+  .dash .ln2,.dash .gl,.dash .area,.dash .kpi,.dash .pt,.dash .mig{
+    transition:opacity .6s ease!important}
+  .dash .bar .fg{transition:transform 1s ease!important}
+  .tr>i{transition:width 1.2s ease!important}
+
+  /* hover feedback stays legible */
+  .btn,.card,.nl a,a,#ind,.cs,.tile,[role=tab]{transition-duration:.2s!important}
+
+  /* small status indicators are not motion hazards */
+  .dot.live{animation:p 2.4s infinite!important}
+  .hchips li.live i::after{animation:blip 2s infinite!important}
+  .js .on [data-c]{animation:pop .55s ease!important}
+}
 
 /* ══ RESPONSIVE ══════════════════════════════════════ */
 @media (max-width:940px){
